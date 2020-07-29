@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+
+<launch>
+  	<arg name="robot_namespace" default="agv1"/>
+
+  <!-- Run the map server -->
+  <arg name="map_file" default="$(find agv_navigation)/map/map2511.yaml"/> <!-- teknoMap   yeniLab 	currentMap -->
+  
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)">
+	<param name="frame_id" value="map" />  
+	</node>
+
+<!-- __________________________________________ Localization ________________________________________ -->
+<!-- ________________________________________ Run AMCL for agv ______________________________________ -->
+  	<include file="$(find agv_navigation)/launch/agv_amcl.launch" /> 
+
+
+<!-- ____________________________________ Run Move Base for agv _____________________________________ -->
+ 	  <include file="$(find agv_navigation)/launch/agv_move_base.launch" />
+<!--		-> Global_Planner 	= Global		Local_Planner 	= DWA-->
+
+
+  <!-- Run tf between map to odom for agv1  -->
+  <node pkg="tf" type="static_transform_publisher" name="map_odom_agv1" args="0 0 0 0 0 0  map agv1/odom 100"/>
+
+<!-- 
+<group ns="/agv1">
+ <param name="tf_prefix" value="agv1"/>
+   <param name="robot_description" command="$(find xacro)/xacro '$(find agv_description)/urdf/agv_body_withoutshelf.xacro'" />
+
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+        <param name="robot_description" command="$(find xacro)/xacro '$(find agv_description)/urdf/agv_body_withoutshelf.xacro'" />
+  </node>
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+<node pkg="tf" type="static_transform_publisher" name="odom2base" args="0 0 0 0 0 0 agv1/odom agv1/base_link ****Closed tag*****
+  </group>
+-->
+
+	<group ns="$(arg robot_namespace)">
+<node pkg="agv_navigation" type="initial_pose" name="agv1_init"/> 
+
+  	</group>	
+</launch>

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<launch>
+
+	<include file="$(find agv_smach)/launch/viewer.launch" />
+	
+	<node pkg="agv_smach" type="agv_phm_smach.py" name="agv_phm_smach" output="screen" />
+	
+</launch>

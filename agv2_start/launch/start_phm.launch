@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+
+<launch>
+
+    <include file="$(find agv_gazebo)/launch/start_agv_v2.launch" />
+
+    <include file="$(find timed_roslaunch)/launch/timed_roslaunch.launch">
+        <arg name="time" value="2" />
+        <arg name="pkg" value="agv_navigation" />
+        <arg name="file" value="start_navigation.launch" />
+    </include>
+
+    <include file="$(find timed_roslaunch)/launch/timed_roslaunch.launch">
+        <arg name="time" value="3" />
+        <arg name="pkg" value="agv_viz" />
+        <arg name="file" value="view_agv.launch" />
+    </include>
+
+<!--
+    <include file="$(find timed_roslaunch)/launch/timed_roslaunch.launch">
+        <arg name="time" value="4" />
+        <arg name="pkg" value="agv_smach" />
+        <arg name="file" value="viewer.launch" />
+    </include>
+-->
+    <include file="$(find timed_roslaunch)/launch/timed_roslaunch.launch">
+        <arg name="time" value="5" />
+        <arg name="pkg" value="agv_smach" />
+        <arg name="file" value="start_phm_smach.launch" />
+    </include>
+
+</launch>
