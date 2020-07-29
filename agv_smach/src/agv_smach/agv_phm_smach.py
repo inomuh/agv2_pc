@@ -115,7 +115,7 @@ class idle_standby_state(smach.State):
 
     def execute(self, userdata):
         rospy.loginfo("Idle Standby")
-        self.control = False    # Buraya Eklendi
+        self.control = False
 
         if len(list(userdata.task_input)) == 0:
             self.pub_task = rospy.Publisher('robot_task_list', String, queue_size=10)
@@ -153,11 +153,9 @@ class idle_standby_state(smach.State):
             move_speed = float(random.uniform(0.25, 0.35))
             temp_array = [temp_task["x"], temp_task["y"], move_speed]
             published_task_list.append(temp_array)
-        #pub_task = rospy.Publisher('robot_task_list', String, queue_size=10)
-        #rospy.loginfo("\n\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n\n->         Robot Task \n\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n\n")
-        #rospy.loginfo(str(published_task_list))
+
         msg_task = String()
-        msg_task.data = str(published_task_list)       # task_list
+        msg_task.data = str(published_task_list)
 
         self.pub_task.publish(msg_task)
 
@@ -237,7 +235,7 @@ class docking_states(smach.State):
     docking_val = False
     docking_count = 0
     def __init__(self):
-        smach.State.__init__(self,  outcomes=['succeeded', 'aborted'],  #'robot_arm', 
+        smach.State.__init__(self,  outcomes=['succeeded', 'aborted'],
                                     input_keys=['task_input'],
                                     output_keys=['task_output', 'current_task_output'])
 
@@ -307,7 +305,6 @@ class robot_arm_states(smach.State):
         idle_standby_state.time_variable += time_diff
         idle_standby_state.time_list.append(time_diff)
 
-        # Yapilan docking islemi
         docking_states.docking_count += 1
 
         return 'succeeded'
@@ -341,8 +338,7 @@ class parking_states(smach.State):
         yaw = temp_task["Waypoint"]["yaw"]
         
         success = agv_nav.dynamic_target_position_and_yaw(position, yaw)
-        
-        #time.sleep(3)
+
         done = time.time()
         time_diff = done - start
         idle_standby_state.time_variable += time_diff
@@ -423,7 +419,7 @@ def main():
         with sm_docking:
 
             smach.StateMachine.add('Docking_Waypoint', docking_states(),
-                                transitions={'succeeded':'Robot_Arm_Communication', 'aborted':'Docking_State_2'},   # transitions={'succeeded':'Docking_State_1', 'robot_arm':'Robot_Arm_Communication', 'aborted':'Docking_State_2'},
+                                transitions={'succeeded':'Robot_Arm_Communication', 'aborted':'Docking_State_2'},
                                 remapping={ 'task_input':'task',
                                             'task_output':'task',
                                             'current_task_output':'current_task'})

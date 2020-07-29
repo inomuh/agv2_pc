@@ -12,15 +12,12 @@ class TaskParsePub:
 
 
 	def callback(self,msg):
-		#print("AAAAAAAAAAAAAAAAAAAAAAAAAAA")
 		gorev_sunucu = msg.data
 		gorev_njson = json.loads(gorev_sunucu)
 		self.task = []
 		for i in range(len(gorev_njson["plan"])):
 			robotId = gorev_njson["plan"][i]["robotID"]
-			#print(robotId)
 			robotEquipmentID = gorev_njson["plan"][i]["robotEquipmentID"]
-			#print("%d %d\n" % (robotId,robotEquipmentID))
 			robotTaskList = gorev_njson["plan"][i]["taskList"]
 			for y in range(len(gorev_njson["plan"][i]["taskList"])):
 				#print(y)
@@ -32,23 +29,20 @@ class TaskParsePub:
 				robotTaskDuty = str(gorev_njson["plan"][i]["taskList"][y]["duty"])
 				robotTaskProductName = str(gorev_njson["plan"][i]["taskList"][y]["productName"])
 				robotTaskProductCount = gorev_njson["plan"][i]["taskList"][y]["productCount"]
-				#print("%d %d %d %s %s %d\n" %(robotTaskId,robotTaskWorkBench,robotTaskStationId,robotTaskDuty,robotTaskProductName,robotTaskProductCount))
-				#print("***********************")
+
 				for z in range(len(gorev_njson["plan"][i]["taskList"][y]["route"])):
-					#print(z)
+
 					robotTaskRouteTagTypeDef = str(gorev_njson["plan"][i]["taskList"][y]["route"][z]["tags"]["type_definition"])
 					robotTaskRouteX = gorev_njson["plan"][i]["taskList"][y]["route"][z]["x"]
 					robotTaskRouteY = gorev_njson["plan"][i]["taskList"][y]["route"][z]["y"]
 					robotTaskRouteYaw = float(eval(gorev_njson["plan"][i]["taskList"][y]["route"][z]["yaw"]))
 					waypoint.append([robotTaskRouteX,robotTaskRouteY,robotTaskRouteYaw])
 					signal.append([robotTaskRouteTagTypeDef])
-				#print(waypoint)
-				#print(signal)
+
 				taskDraft = [robotTaskId,robotTaskStationId,robotTaskDuty,robotTaskProductName,robotTaskProductCount,waypoint,signal]
-				#print(taskDraft)
+
 				self.task.append(taskDraft)
-			#print(self.task)
-		#print("---------------------------------")
+
 		self.control = True
 
 
@@ -103,7 +97,6 @@ class TaskParsePub:
 	def publisher(self):
 		self.subscriber = rospy.Subscriber("gorev", String, self.callback)
 		self.pub = rospy.Publisher('robot_task', String, queue_size=10)
-		#self.rate = rospy.Rate(10) # 10hz
 		self.rate = rospy.Rate(2)
 
 		msg = String()
