@@ -20,7 +20,7 @@ unzip OTA-v0.7.stl.zip
 
 gedit ~/.bashrc
 
-export GAZEBO_MODEL_PATH=~/<WORKSPACE_NAME>/src/agv2_pc/building_editor_models:~/<WORKSPACE_NAME>/src/agv2_pc/model_editor_models:$GAZEBO_MODEL_PATH
+export GAZEBO_MODEL_PATH= ~/<WORKSPACE_NAME>/src/agv2_pc/building_editor_models: ~/<WORKSPACE_NAME>/src/agv2_pc/model_editor_models:$GAZEBO_MODEL_PATH
 
 
 
