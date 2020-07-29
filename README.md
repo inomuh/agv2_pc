@@ -44,6 +44,9 @@ rosrun agv_smach phm_task_parse.py
 Task Publishers
 
 rosrun agv_smach phm_task_pub_1.py
+
 rosrun agv_smach phm_task_pub_2.py
+
 rosrun agv_smach phm_task_pub_3.py
+
 rosrun agv_smach phm_task_pub_4.py
